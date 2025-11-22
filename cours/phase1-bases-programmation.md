@@ -567,6 +567,12 @@ interface Product {
   category: string;
 }
 
+/**
+ * Filtre un tableau de produits par catégorie
+ * @param products - Tableau de produits à filtrer (peut être undefined)
+ * @param category - Catégorie à rechercher
+ * @returns Tableau filtré de produits, ou tableau vide si products est undefined
+ */
 function filterProducts(
   products: Product[] | undefined,
   category: string

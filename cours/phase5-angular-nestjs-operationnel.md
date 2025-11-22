@@ -217,9 +217,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   // Activer la validation automatique des DTOs
+  // ⚠️ SÉCURITÉ : Cette configuration protège contre les attaques d'injection
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,      // Supprime les propriétés non définies dans le DTO
-    forbidNonWhitelisted: true, // Rejette les requêtes avec propriétés inconnues
+    whitelist: true,      // Supprime les propriétés non définies dans le DTO (sécurité)
+    forbidNonWhitelisted: true, // Rejette les requêtes avec propriétés inconnues (important pour éviter les injections)
     transform: true,      // Transforme les types automatiquement
   }));
 

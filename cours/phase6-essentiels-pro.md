@@ -322,6 +322,9 @@ export class AuthService {
     return this.http.post<LoginResponse>('http://localhost:3000/auth/login', { email, password })
       .pipe(
         tap(response => {
+          // ⚠️ ATTENTION SÉCURITÉ : localStorage est vulnérable aux attaques XSS
+          // Pour la production, préférer httpOnly cookies (configurés côté backend)
+          // Voir table "Erreurs Courantes Auth" pour les alternatives sécurisées
           localStorage.setItem('access_token', response.access_token);
           localStorage.setItem('current_user', JSON.stringify(response.user));
           this.currentUser.set(response.user);
@@ -456,7 +459,13 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       console.error('HTTP Error:', error);
-      alert(message); // En prod: utiliser un service de notifications (toast)
+      
+      // ⚠️ NOTE : alert() est utilisé ici pour la simplicité pédagogique
+      // En production, utiliser un service de notifications professionnel :
+      // - Angular Material Snackbar: https://material.angular.io/components/snack-bar
+      // - ngx-toastr: https://www.npmjs.com/package/ngx-toastr
+      // Exemple : this.toastr.error(message, 'Erreur');
+      alert(message);
       
       return throwError(() => error);
     })
